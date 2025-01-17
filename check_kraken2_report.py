@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
+import os
 import argparse
 
 def check_kraken2_report(reportfile:str, ktaxfile:str, newreportfile:str):
@@ -32,15 +33,15 @@ def check_kraken2_report(reportfile:str, ktaxfile:str, newreportfile:str):
     
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-i' ,'--report', dest='report_file', required=True,
-        help='Input kraken report file.')
-    parser.add_argument('-k', '--ktax', dest='ktax_file', required=True,
-        help='Input kraken ktaxonomy file.')
+    parser.add_argument('-i' ,'--report', dest='report', required=True,
+        help='Kraken REPORT file to use for abundance estimation')
+    parser.add_argument('-d', '--k2db', dest='k2db', required=True,
+        help='Location of Kraken database')
     parser.add_argument('-o', '--output', dest='output', required=True,
-        help='Output modified kraken report file to fix null taxonomic level')
+        help='Checked Kraken REPORT checked output file')
     args=parser.parse_args()
-    check_kraken2_report(reportfile=args.report_file,
-                         ktaxfile=args.ktax_file,
+    check_kraken2_report(reportfile=args.report,
+                         ktaxfile=os.path.join(args.k2db, "ktaxonomy.tsv"),
                          newreportfile=args.output)
     return(None)
 
